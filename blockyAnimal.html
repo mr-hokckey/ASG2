@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Draw a point (1)</title>
+</head>
+
+<body onload="main()">
+    <canvas id="webgl" width="400" height="400">
+        Please use a browser that supports "canvas"
+    </canvas>
+
+    <p></p>
+
+    <button id="button_undo">Undo</button>
+    <button id="button_clearCanvas">Clear Canvas</button>
+
+    <p></p>
+    
+    Drawing Mode:
+    <div>
+        <button id="button_squares">Squares</button>
+        <button id="button_triangles">Triangles</button>
+        <button id="button_circles">Circles</button>
+    </div>
+
+    <p></p>
+
+    Shape Color:
+    <div>  
+        <input type="range" min="0" max="100" value="100" class="slider" id="slider_red"> Red
+    </div>
+    <div>
+        <input type="range" min="0" max="100" value="100" class="slider" id="slider_green"> Green
+    </div>
+    <div>
+        <input type="range" min="0" max="100" value="100" class="slider" id="slider_blue"> Blue
+    </div>
+
+    <p></p>
+
+    <div>
+        <input type="range" min="4" max="40" value="4" class="slider" id="slider_size"> Shape Size
+    </div>
+    <div>
+        <input type="range" min="10" max="20" value="10" class="slider" id="slider_segments"> Circle Segment Count
+    </div>
+    <p></p>
+    My Awesome additions:
+    <p></p>
+    - Click drag WHILE HOLDING SHIFT to continuously draw shapes. I didn't like how easy it was to accidentally move my mouse while clicking, so I made it more intentional.
+    <p></p>
+    - Added an Undo button to remove the most recently placed shape.
+
+    <p></p>
+
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="lib/cuon-matrix.js"></script>
+    <script src="Point.js"></script>
+    <script src="Triangle.js"></script>
+    <script src="Circle.js"></script>
+    <script src="Cube.js"></script>
+    <script src="blockyAnimal.js"></script>
+</body>
+
+</html>
