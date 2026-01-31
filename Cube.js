@@ -35,11 +35,30 @@ class Cube {
         //     drawTriangle([xy[0], xy[1], pt1[0], pt1[1], pt2[0], pt2[1]]);
         // }
 
-        // Front of cube
-        drawTriangle3D( [0.0,0.0,0.0, 1.0,1.0,0.0, 1.0,0.0,0.0] );
-        drawTriangle3D( [0.0,0.0,0.0, 0.0,1.0,0.0, 1.0,1.0,0.0] );
-
-        // Other sides of cube: top, bottom, left, right, back
-
+        // Draw
+        drawCube();
     }
+}
+
+function drawCube() {
+    // Front and back
+    drawTriangle3D( [0.0,0.0,0.0, 1.0,1.0,0.0, 1.0,0.0,0.0] );
+    drawTriangle3D( [0.0,0.0,0.0, 1.0,1.0,0.0, 0.0,1.0,0.0] );
+
+    drawTriangle3D( [0.0,0.0,1.0, 1.0,1.0,1.0, 1.0,0.0,1.0] );
+    drawTriangle3D( [0.0,0.0,1.0, 1.0,1.0,1.0, 0.0,1.0,1.0] );
+
+    // Top and bottom
+    drawTriangle3D( [0.0,1.0,0.0, 1.0,1.0,1.0, 1.0,1.0,0.0] );
+    drawTriangle3D( [0.0,1.0,0.0, 1.0,1.0,1.0, 0.0,1.0,1.0] );
+
+    drawTriangle3D( [0.0,1.0,0.0, 1.0,1.0,1.0, 1.0,1.0,0.0] );
+    drawTriangle3D( [0.0,1.0,0.0, 1.0,1.0,1.0, 0.0,1.0,1.0] );
+
+    // Left and right
+    drawTriangle3D( [0.0,0.0,0.0, 0.0,1.0,1.0, 0.0,0.0,1.0] );
+    drawTriangle3D( [0.0,0.0,0.0, 0.0,1.0,1.0, 0.0,1.0,0.0] );
+
+    drawTriangle3D( [1.0,0.0,0.0, 1.0,1.0,1.0, 1.0,0.0,1.0] );
+    drawTriangle3D( [1.0,0.0,0.0, 1.0,1.0,1.0, 1.0,1.0,0.0] );
 }

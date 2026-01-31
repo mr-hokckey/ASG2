@@ -11,7 +11,7 @@ var VSHADER_SOURCE = `
 // Fragment shader program
 var FSHADER_SOURCE = `
     precision mediump float;
-    uniform vec4 u_FragColor;  // uniform変数
+    uniform vec4 u_FragColor;
     void main() {
         gl_FragColor = u_FragColor;
     }`;
@@ -38,6 +38,9 @@ function setupWebGL() {
         console.log('Failed to get the rendering context for WebGL');
         return;
     }
+
+    // enable depth test
+    gl.enable(gl.DEPTH_TEST);
 }
 
 // compile the shader programs, attach the javascript variables to the GLSL variables
@@ -156,8 +159,8 @@ function convertCoordinatesEventToGL(ev) {
 }
 
 function renderAllShapes() {
-    // Clear <canvas>
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    // Clear <canvas>  AND clear the DEPTH_BUFFER
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Draw each shape in the list
     var len = g_shapesList.length;
