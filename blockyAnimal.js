@@ -3,8 +3,9 @@
 var VSHADER_SOURCE = `
     attribute vec4 a_Position;
     uniform float u_Size;
+    uniform mat4 u_ModelMatrix;
     void main() {
-        gl_Position = a_Position;
+        gl_Position = u_ModelMatrix * a_Position;
         gl_PointSize = u_Size;
     }`;
 
@@ -22,6 +23,7 @@ let gl;
 let a_Position;
 let u_FragColor;
 let u_Size;
+let u_ModelMatrix;
 
 const POINT = 0;
 const TRIANGLE = 1;
@@ -69,6 +71,12 @@ function connectVariablesToGLSL() {
     u_Size = gl.getUniformLocation(gl.program, 'u_Size');
     if (!u_Size) {
         console.log('Failed to get the storage location of u_Size');
+        return;
+    }
+
+    u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix');
+    if (!u_ModelMatrix) {
+        console.log('Failed to get the storage location of u_ModelMatrix');
         return;
     }
 }
