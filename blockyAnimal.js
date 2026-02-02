@@ -4,8 +4,9 @@ var VSHADER_SOURCE = `
     attribute vec4 a_Position;
     uniform float u_Size;
     uniform mat4 u_ModelMatrix;
+    uniform mat4 u_GlobalRotation;
     void main() {
-        gl_Position = u_ModelMatrix * a_Position;
+        gl_Position = u_GlobalRotation * u_ModelMatrix * a_Position;
         gl_PointSize = u_Size;
     }`;
 
@@ -24,6 +25,7 @@ let a_Position;
 let u_FragColor;
 let u_Size;
 let u_ModelMatrix;
+let u_GlobalRotation;
 
 const POINT = 0;
 const TRIANGLE = 1;
@@ -79,12 +81,19 @@ function connectVariablesToGLSL() {
         console.log('Failed to get the storage location of u_ModelMatrix');
         return;
     }
+
+    u_GlobalRotation = gl.getUniformLocation(gl.program, 'u_GlobalRotation');
+    if (!u_GlobalRotation) {
+        console.log('Failed to get the storage location of u_GlobalRotation');
+        return;
+    }
 }
 
 let g_selectedColor = [1.0, 1.0, 1.0, 1.0];
 let g_selectedSize = 4;
 let g_selectedType = POINT;
 let g_selectedSegments = 10;
+let g_animalGlobalRotation = new Matrix4();
 
 function addActionsForHtmlUI() {
     // Clear Canvas button
@@ -104,6 +113,12 @@ function addActionsForHtmlUI() {
 
     document.getElementById("slider_size").addEventListener('mouseup', function () { g_selectedSize = this.value; });
     document.getElementById("slider_segments").addEventListener('mouseup', function () { g_selectedSegments = this.value; });
+
+    document.getElementById("slider_rotation").addEventListener('mouseup', function () { 
+        g_animalGlobalRotation.setRotate(this.value, 0, 1, 0);
+        gl.uniformMatrix4fv(u_GlobalRotation, false, g_animalGlobalRotation.elements);
+        renderAllShapes();
+    });
 }
 
 function main() {
@@ -177,7 +192,7 @@ function renderAllShapes() {
     }
 
     // Draw a test triangle
-    drawTriangle3D( [-1.0,0.0,0.0, -0.5,-1.0,0.0, 0.0,0.0,0.0] );
+    // drawTriangle3D( [-1.0,0.0,0.0, -0.5,-1.0,0.0, 0.0,0.0,0.0] );
 
     // Draw a cube
     var body = new Cube();

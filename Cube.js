@@ -34,11 +34,12 @@ class Cube {
 
         //     drawTriangle([xy[0], xy[1], pt1[0], pt1[1], pt2[0], pt2[1]]);
         // }
-        
+
         var M = new Matrix4();
-        M.setTranslate(-0.5, -0.5, 0);
+        // M.setTranslate(-0.5, -0.5, 0);
         M.rotate(30, 1, 0, 0);
-        M.rotate(30, 0, 1, 0);
+        M.scale(0.5, 0.5, 0.5);
+        // M.rotate(30, 0, 1, 0);
         // Draw
         drawCube(M);
     }
@@ -48,23 +49,23 @@ function drawCube(M) {
     gl.uniformMatrix4fv(u_ModelMatrix, false, M.elements);
 
     // Front and back
-    drawTriangle3D( [0.0,0.0,0.0, 1.0,1.0,0.0, 1.0,0.0,0.0] );
-    drawTriangle3D( [0.0,0.0,0.0, 1.0,1.0,0.0, 0.0,1.0,0.0] );
+    drawTriangle3D( [0,0,0, 1,1,0, 1,0,0] );
+    drawTriangle3D( [0,0,0, 1,1,0, 0,1,0] );
 
-    drawTriangle3D( [0.0,0.0,1.0, 1.0,1.0,1.0, 1.0,0.0,1.0] );
-    drawTriangle3D( [0.0,0.0,1.0, 1.0,1.0,1.0, 0.0,1.0,1.0] );
+    drawTriangle3D( [0,0,1, 1,1,1, 1,0,1] );
+    drawTriangle3D( [0,0,1, 1,1,1, 0,1,1] );
 
     // Top and bottom
-    drawTriangle3D( [0.0,1.0,0.0, 1.0,1.0,1.0, 1.0,1.0,0.0] );
-    drawTriangle3D( [0.0,1.0,0.0, 1.0,1.0,1.0, 0.0,1.0,1.0] );
+    drawTriangle3D( [0,1,0, 1,1,1, 1,1,0] );
+    drawTriangle3D( [0,1,0, 1,1,1, 0,1,1] );
 
-    drawTriangle3D( [0.0,0.0,0.0, 1.0,0.0,1.0, 1.0,0.0,0.0] );
-    drawTriangle3D( [0.0,0.0,0.0, 1.0,0.0,1.0, 0.0,0.0,1.0] );
+    drawTriangle3D( [0,0,0, 1,0,1, 1,0,0] );
+    drawTriangle3D( [0,0,0, 1,0,1, 0,0,1] );
 
     // Left and right
-    drawTriangle3D( [0.0,0.0,0.0, 0.0,1.0,1.0, 0.0,0.0,1.0] );
-    drawTriangle3D( [0.0,0.0,0.0, 0.0,1.0,1.0, 0.0,1.0,0.0] );
+    drawTriangle3D( [0,0,0, 0,1,1, 0,0,1] );
+    drawTriangle3D( [0,0,0, 0,1,1, 0,1,0] );
 
-    drawTriangle3D( [1.0,0.0,0.0, 1.0,1.0,1.0, 1.0,0.0,1.0] );
-    drawTriangle3D( [1.0,0.0,0.0, 1.0,1.0,1.0, 1.0,1.0,0.0] );
+    drawTriangle3D( [1,0,0, 1,1,1, 1,0,1] );
+    drawTriangle3D( [1,0,0, 1,1,1, 1,1,0] );
 }
