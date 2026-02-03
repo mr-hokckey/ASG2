@@ -95,6 +95,23 @@ let g_selectedType = POINT;
 let g_selectedSegments = 10;
 let g_animalGlobalRotation = new Matrix4();
 
+let g_wingAngle = 45;
+let g_headAngle = 0;
+let g_beakSize = 0.6;
+
+var g_startTime = performance.now() / 1000.0;
+var g_seconds = performance.now() / 1000.0 - g_startTime;
+var g_wingAnimation = true;
+
+function tick() {
+    g_seconds = performance.now() / 1000.0 - g_startTime;
+
+    renderAllShapes();
+
+    requestAnimationFrame(tick);
+}
+
+
 function addActionsForHtmlUI() {
     // Clear Canvas button
     document.getElementById("button_undo").onclick = function () { g_shapesList.pop(); renderAllShapes(); }
@@ -119,6 +136,11 @@ function addActionsForHtmlUI() {
         gl.uniformMatrix4fv(u_GlobalRotation, false, g_animalGlobalRotation.elements);
         renderAllShapes();
     });
+    document.getElementById("slider_wingAngle").addEventListener('mousemove', function () { g_wingAngle = this.value; renderAllShapes(); });
+    document.getElementById("slider_headAngle").addEventListener('mousemove', function () { g_headAngle = this.value; renderAllShapes(); });
+    document.getElementById("slider_beakSize").addEventListener('mousemove', function () { g_beakSize = this.value / 10; renderAllShapes(); });
+
+    document.getElementById("checkbox_animation").addEventListener('change', function () { g_wingAnimation = !g_wingAnimation; renderAllShapes(); });
 }
 
 function main() {
@@ -141,7 +163,8 @@ function main() {
     // gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniformMatrix4fv(u_GlobalRotation, false, g_animalGlobalRotation.elements);
 
-    renderAllShapes();
+    // renderAllShapes();
+    requestAnimationFrame(tick);
 }
 
 var g_shapesList = [];
@@ -198,25 +221,89 @@ function renderAllShapes() {
 
     // Draw cubes
     var body = new Cube();
-    body.color = [1,1,1,1];
+    body.color = [0,0.5,0.5,1];
     body.matrix = new Matrix4();
     body.matrix.rotate(-45, 0, 0, 1);
-    body.matrix.scale(0.4, 0.6, 0.4);   
+    body.matrix.scale(0.4, 0.6, 0.4);
     body.render();
 
     var head = new Cube();
-    head.color = [1,0,0,1];
+    head.color = [0,0.2,0.8,1];
     head.matrix = new Matrix4();
-    head.matrix.setTranslate(0.3, 0.3, 0);
-    head.matrix.rotate(-30, 0, 0, 1);
+    head.matrix.rotate(60, 0, 0, 1);
+    head.matrix.translate(0.4, -0.1, 0);
+    head.matrix.rotate(g_headAngle, 1, 0, 0);
+    var headCoordinatesMat = new Matrix4(head.matrix);
     head.matrix.scale(0.39, 0.39, 0.39);
     head.render();
 
     var beak = new Cube();
     beak.color = [1,0.5,0,1];
-    beak.matrix = new Matrix4();
-    beak.matrix.setTranslate(0.6, 0.37, 0);
-    beak.matrix.rotate(10, 0, 0, 1);
-    beak.matrix.scale(0.6, 0.1, 0.1);
+    beak.matrix = headCoordinatesMat;
+    beak.matrix.rotate(-45, 0, 0, 1);
+    beak.matrix.translate(g_beakSize / 2, 0, 0);
+    beak.matrix.scale(g_beakSize, 0.1, 0.1);
+    var beakCoordinatesMat = new Matrix4(beak.matrix);
     beak.render();
+
+    // A hummingbird by itself doesn't really have enough parts to make a chain of
+    // 3 parts. So I took some creative liberties.
+    var flower = new Cube();
+    flower.color = [1,0,0,1];
+    flower.matrix = beakCoordinatesMat;
+    flower.matrix.translate(0.7,0,0);
+    flower.matrix.scale(0.2,2,2);
+    flower.render();
+
+    var wingLeft = new Cube();
+    wingLeft.color = [0,0.5,0.25,1];
+    wingLeft.matrix = new Matrix4();
+    wingLeft.matrix.rotate(45, 0, 0, 1);
+    wingLeft.matrix.translate(0.1, 0.19, 0.19);
+    if (g_wingAnimation) {
+        wingLeft.matrix.rotate(90 * Math.sin(g_seconds * g_wingAngle) + 90, 1, 0, 0);
+    } else {
+        wingLeft.matrix.rotate(g_wingAngle, 1, 0, 0);
+    }
+    wingLeft.matrix.translate(0, 0.3, 0);
+    wingLeft.matrix.scale(0.4, 0.6, 0.1);
+    wingLeft.render();
+
+    var wingRight = new Cube();
+    wingRight.color = [0,0.5,0.25,1];
+    wingRight.matrix = new Matrix4();
+    wingRight.matrix.rotate(45, 0, 0, 1);
+    wingRight.matrix.translate(0.1, 0.19, -0.19);
+    if (g_wingAnimation) {
+        wingRight.matrix.rotate(-(90 * Math.sin(g_seconds * g_wingAngle) + 90), 1, 0, 0);
+    } else {
+        wingRight.matrix.rotate(-g_wingAngle, 1, 0, 0);
+    }
+    wingRight.matrix.translate(0, 0.3, 0);
+    wingRight.matrix.scale(0.4, 0.6, 0.1);
+    wingRight.render();
+
+    var footLeft = new Cube();
+    footLeft.color = [0.2,0.2,0.2,1];
+    footLeft.matrix = new Matrix4();
+    footLeft.matrix.translate(0, -0.3, 0.1);
+    footLeft.matrix.rotate(-45, 0, 0, 1);
+    footLeft.matrix.scale(0.1, 0.1, 0.1);
+    footLeft.render();
+
+    var footRight = new Cube();
+    footRight.color = [0.2,0.2,0.2,1];
+    footRight.matrix = new Matrix4();
+    footRight.matrix.translate(0, -0.3, -0.1);
+    footRight.matrix.rotate(-45, 0, 0, 1);
+    footRight.matrix.scale(0.1, 0.1, 0.1);
+    footRight.render();
+
+    var tail = new Cube();
+    tail.color = [0.9,0.9,0.9,1];
+    tail.matrix = new Matrix4();
+    tail.matrix.rotate(-45, 0, 0, 1);
+    tail.matrix.translate(0, -0.5, 0);
+    tail.matrix.scale(0.2, 0.4, 0.4);
+    tail.render();
 }
