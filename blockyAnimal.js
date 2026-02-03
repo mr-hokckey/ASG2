@@ -114,7 +114,7 @@ function addActionsForHtmlUI() {
     document.getElementById("slider_size").addEventListener('mouseup', function () { g_selectedSize = this.value; });
     document.getElementById("slider_segments").addEventListener('mouseup', function () { g_selectedSegments = this.value; });
 
-    document.getElementById("slider_rotation").addEventListener('mouseup', function () { 
+    document.getElementById("slider_rotation").addEventListener('mousemove', function () { 
         g_animalGlobalRotation.setRotate(this.value, 0, 1, 0);
         gl.uniformMatrix4fv(u_GlobalRotation, false, g_animalGlobalRotation.elements);
         renderAllShapes();
@@ -139,6 +139,8 @@ function main() {
 
     // Render all shapes
     // gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniformMatrix4fv(u_GlobalRotation, false, g_animalGlobalRotation.elements);
+
     renderAllShapes();
 }
 
@@ -194,8 +196,27 @@ function renderAllShapes() {
     // Draw a test triangle
     // drawTriangle3D( [-1.0,0.0,0.0, -0.5,-1.0,0.0, 0.0,0.0,0.0] );
 
-    // Draw a cube
+    // Draw cubes
     var body = new Cube();
-    body.color = [1.0,0.0,0.0,1.0];
+    body.color = [1,1,1,1];
+    body.matrix = new Matrix4();
+    body.matrix.rotate(-45, 0, 0, 1);
+    body.matrix.scale(0.4, 0.6, 0.4);   
     body.render();
+
+    var head = new Cube();
+    head.color = [1,0,0,1];
+    head.matrix = new Matrix4();
+    head.matrix.setTranslate(0.3, 0.3, 0);
+    head.matrix.rotate(-30, 0, 0, 1);
+    head.matrix.scale(0.39, 0.39, 0.39);
+    head.render();
+
+    var beak = new Cube();
+    beak.color = [1,0.5,0,1];
+    beak.matrix = new Matrix4();
+    beak.matrix.setTranslate(0.6, 0.37, 0);
+    beak.matrix.rotate(10, 0, 0, 1);
+    beak.matrix.scale(0.6, 0.1, 0.1);
+    beak.render();
 }

@@ -19,29 +19,74 @@ class Cube {
         // // Pass the size of a point to u_Size variable
         // gl.uniform1f(u_Size, size);
 
-        // // Draw
-        // var d = size / 200.0;
+        // Pass the matrix to u_ModelMatrix
+        gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
 
-        // let angleStep = 360 / this.segments;
-        // for (var angle = 0; angle < 360; angle = angle + angleStep) {
-        //     let centerPt = [xy[0], xy[1]];
-        //     let angle1 = angle;
-        //     let angle2 = angle + angleStep;
-        //     let vec1 = [Math.cos(angle1 * Math.PI / 180) * d, Math.sin(angle1 * Math.PI / 180) * d];
-        //     let vec2 = [Math.cos(angle2 * Math.PI / 180) * d, Math.sin(angle2 * Math.PI / 180) * d];
-        //     let pt1 = [centerPt[0] + vec1[0], centerPt[1] + vec1[1]];
-        //     let pt2 = [centerPt[0] + vec2[0], centerPt[1] + vec2[1]];
+        // Fake lighting
+        // gl.uniform4f(u_FragColor, rgba[0]*0.9, rgba[1]*0.9, rgba[2]*0.9, rgba[3]);
 
-        //     drawTriangle([xy[0], xy[1], pt1[0], pt1[1], pt2[0], pt2[1]]);
-        // }
-
-        var M = new Matrix4();
-        // M.setTranslate(-0.5, -0.5, 0);
-        M.rotate(30, 1, 0, 0);
-        M.scale(0.5, 0.5, 0.5);
-        // M.rotate(30, 0, 1, 0);
         // Draw
-        drawCube(M);
+
+        // // Top
+        // drawTriangle3D( [0,1,0, 1,1,1, 1,1,0] );
+        // drawTriangle3D( [0,1,0, 1,1,1, 0,1,1] );
+
+        // // Front
+        // gl.uniform4f(u_FragColor, rgba[0]*0.9, rgba[1]*0.9, rgba[2]*0.9, rgba[3]);
+        // drawTriangle3D( [0,0,0, 1,1,0, 1,0,0] );
+        // drawTriangle3D( [0,0,0, 1,1,0, 0,1,0] );
+
+        // // Right
+        // gl.uniform4f(u_FragColor, rgba[0]*0.8, rgba[1]*0.8, rgba[2]*0.8, rgba[3]);
+        // drawTriangle3D( [1,0,0, 1,1,1, 1,0,1] );
+        // drawTriangle3D( [1,0,0, 1,1,1, 1,1,0] );
+
+        // // Left
+        // gl.uniform4f(u_FragColor, rgba[0]*0.7, rgba[1]*0.7, rgba[2]*0.7, rgba[3]);
+        // drawTriangle3D( [0,0,0, 0,1,1, 0,0,1] );
+        // drawTriangle3D( [0,0,0, 0,1,1, 0,1,0] );
+
+        // // Back
+        // gl.uniform4f(u_FragColor, rgba[0]*0.6, rgba[1]*0.6, rgba[2]*0.6, rgba[3]);
+        // drawTriangle3D( [0,0,1, 1,1,1, 1,0,1] );
+        // drawTriangle3D( [0,0,1, 1,1,1, 0,1,1] );
+
+        // // Bottom
+        // gl.uniform4f(u_FragColor, rgba[0]*0.5, rgba[1]*0.5, rgba[2]*0.5, rgba[3]);
+        // drawTriangle3D( [0,0,0, 1,0,1, 1,0,0] );
+        // drawTriangle3D( [0,0,0, 1,0,1, 0,0,1] );
+
+        // CENTERED VARIATION
+
+        // Top
+        gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
+        drawTriangle3D( [0-0.5,1-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,1-0.5,0-0.5] );
+        drawTriangle3D( [0-0.5,1-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 0-0.5,1-0.5,1-0.5] );
+
+        // Front
+        gl.uniform4f(u_FragColor, rgba[0]*0.9, rgba[1]*0.9, rgba[2]*0.9, rgba[3]);
+        drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,0-0.5, 1-0.5,0-0.5,0-0.5] );
+        drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,0-0.5, 0-0.5,1-0.5,0-0.5] );
+
+        // Right
+        gl.uniform4f(u_FragColor, rgba[0]*0.8, rgba[1]*0.8, rgba[2]*0.8, rgba[3]);
+        drawTriangle3D( [1-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,0-0.5,1-0.5] );
+        drawTriangle3D( [1-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,1-0.5,0-0.5] );
+
+        // Left
+        gl.uniform4f(u_FragColor, rgba[0]*0.7, rgba[1]*0.7, rgba[2]*0.7, rgba[3]);
+        drawTriangle3D( [0-0.5,0-0.5,0-0.5, 0-0.5,1-0.5,1-0.5, 0-0.5,0-0.5,1-0.5] );
+        drawTriangle3D( [0-0.5,0-0.5,0-0.5, 0-0.5,1-0.5,1-0.5, 0-0.5,1-0.5,0-0.5] );
+
+        // Back
+        gl.uniform4f(u_FragColor, rgba[0]*0.6, rgba[1]*0.6, rgba[2]*0.6, rgba[3]);
+        drawTriangle3D( [0-0.5,0-0.5,1-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,0-0.5,1-0.5] );
+        drawTriangle3D( [0-0.5,0-0.5,1-0.5, 1-0.5,1-0.5,1-0.5, 0-0.5,1-0.5,1-0.5] );
+
+        // Bottom
+        gl.uniform4f(u_FragColor, rgba[0]*0.5, rgba[1]*0.5, rgba[2]*0.5, rgba[3]);
+        drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,0-0.5,1-0.5, 1-0.5,0-0.5,0-0.5] );
+        drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,0-0.5,1-0.5, 0-0.5,0-0.5,1-0.5] );
     }
 }
 
@@ -68,4 +113,27 @@ function drawCube(M) {
 
     drawTriangle3D( [1,0,0, 1,1,1, 1,0,1] );
     drawTriangle3D( [1,0,0, 1,1,1, 1,1,0] );
+
+    // centered variation
+
+    // Front and back
+    // drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,0-0.5, 1-0.5,0-0.5,0-0.5] );
+    // drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,0-0.5, 0-0.5,1-0.5,0-0.5] );
+
+    // drawTriangle3D( [0-0.5,0-0.5,1-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,0-0.5,1-0.5] );
+    // drawTriangle3D( [0-0.5,0-0.5,1-0.5, 1-0.5,1-0.5,1-0.5, 0-0.5,1-0.5,1-0.5] );
+
+    // // Top and bottom
+    // drawTriangle3D( [0-0.5,1-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,1-0.5,0-0.5] );
+    // drawTriangle3D( [0-0.5,1-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 0-0.5,1-0.5,1-0.5] );
+
+    // drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,0-0.5,1-0.5, 1-0.5,0-0.5,0-0.5] );
+    // drawTriangle3D( [0-0.5,0-0.5,0-0.5, 1-0.5,0-0.5,1-0.5, 0-0.5,0-0.5,1-0.5] );
+
+    // // Left and right
+    // drawTriangle3D( [0-0.5,0-0.5,0-0.5, 0-0.5,1-0.5,1-0.5, 0-0.5,0-0.5,1-0.5] );
+    // drawTriangle3D( [0-0.5,0-0.5,0-0.5, 0-0.5,1-0.5,1-0.5, 0-0.5,1-0.5,0-0.5] );
+
+    // drawTriangle3D( [1-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,0-0.5,1-0.5] );
+    // drawTriangle3D( [1-0.5,0-0.5,0-0.5, 1-0.5,1-0.5,1-0.5, 1-0.5,1-0.5,0-0.5] );
 }
